@@ -30,7 +30,7 @@ public class Main {
 
         int answer =0;
 
-        for(int h =1 ; h <= max ; h++) {
+        for(int h =0 ; h <= max ; h++) {
 
             int cnt = 0;
             visited = new boolean[n][n];
