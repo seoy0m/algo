@@ -8,7 +8,7 @@ class Solution {
         while (idx < truck_weights.length || !q.isEmpty()) {
             time++;
 
-            // 1) 하차 처리(같은 초에 여러 대도 가능)
+            // 1) 하차 처리
             if (!q.isEmpty() && q.peek()[1] == time) {
                 sum -= q.poll()[0];
             }
