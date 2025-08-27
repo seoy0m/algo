@@ -9,7 +9,7 @@ class Solution {
             time++;
 
             // 1) 하차 처리(같은 초에 여러 대도 가능)
-            while (!q.isEmpty() && q.peek()[1] == time) {
+            if (!q.isEmpty() && q.peek()[1] == time) {
                 sum -= q.poll()[0];
             }
 
