@@ -2,20 +2,24 @@ import java.util.*;
 
 class Solution {
     public String solution(String[] participant, String[] completion) {
-        HashMap<String,Integer> map = new HashMap<>();
-        for(String name : participant){
-            map.put(name,map.getOrDefault(name,0)+1);
+        int n = participant.length;
+        String answer ="";
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        for(int i =0; i<n ; i++){
+            map.put(participant[i],map.getOrDefault(participant[i],0)+1);
         }
         
-        for(String name : completion){
-            map.put(name, map.get(name)-1);
+        for(int i =0; i<n-1 ; i++){
+            map.put(completion[i], map.get(completion[i])-1);
         }
-        String answer = "";
-        for(String key : map.keySet()){
-            if(map.get(key)==1){
-                answer=key;
+        
+        for(String name: map.keySet()){
+            if(map.get(name)==1) {
+                answer= name;
             }
         }
+        
         return answer;
     }
 }
