@@ -1,0 +1,27 @@
+WITH RENTAL_INFO AS (
+    SELECT 
+        H.HISTORY_ID,
+        C.DAILY_FEE,
+        -- 대여 기간 계산 (DATEDIFF는 차이만 구하므로 +1)
+        DATEDIFF(H.END_DATE, H.START_DATE) + 1 AS DURATION,
+        -- 대여 기간에 따른 할인 그룹 이름 붙이기
+        CASE 
+            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 90 THEN '90일 이상'
+            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 30 THEN '30일 이상'
+            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 7 THEN '7일 이상'
+            ELSE '할인 없음'
+        END AS DURATION_TYPE
+    FROM CAR_RENTAL_COMPANY_CAR C
+    JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY H ON C.CAR_ID = H.CAR_ID
+    WHERE C.CAR_TYPE = '트럭' -- 트럭만 미리 뽑아둠
+)
+
+SELECT 
+    R.HISTORY_ID,
+    -- 금액 계산: (일일 요금 * 기간) * (1 - 할인율/100)
+    ROUND(R.DAILY_FEE * R.DURATION * (100 - IFNULL(P.DISCOUNT_RATE, 0)) / 100) AS FEE
+FROM RENTAL_INFO R
+LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN P 
+    ON R.DURATION_TYPE = P.DURATION_TYPE 
+    AND P.CAR_TYPE = '트럭'
+ORDER BY FEE DESC, R.HISTORY_ID DESC;
