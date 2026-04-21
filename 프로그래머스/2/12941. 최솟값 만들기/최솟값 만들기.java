@@ -1,4 +1,4 @@
-import java.io.*;
+
 import java.util.*;
 
 class Solution
@@ -8,10 +8,16 @@ class Solution
         int answer = 0;
         Arrays.sort(A);
         Arrays.sort(B);
+        
         int n = A.length;
-        for(int i=0; i<n; i++){
+        
+        
+        for(int i =0; i<n ; i++){
             answer+= A[i]*B[n-1-i];
         }
+        
+
+        
 
 
         return answer;
